@@ -115,6 +115,7 @@ def docstring_parameters(*sub):
         return obj
     return dec
 
+
 audit_log = None
 
 
@@ -689,21 +690,16 @@ class Db(service.Service):
         :param id: notification id string
         :type id: string
         """
-
         notifications, total = yield self.getNotifications(0, -1)
-
         for json in notifications:
             notification = anyjson.loads(json)
             timestamp = str(notification.get('timestamp'))
             contact_id = notification.get('contact', {}).get('id')
             sub_id = notification.get('event', {}).get('sub_id')
-
             idstr = ''.join([timestamp, contact_id, sub_id])
-
-            if idstr==id:
+            if idstr == id:
                 result = yield self.rc.zrem(NOTIFIER_NOTIFICATIONS, json)
                 defer.returnValue(result)
-
 
     @defer.inlineCallbacks
     @docstring_parameters(TAG_TRIGGERS_PREFIX.format("<tag>"))

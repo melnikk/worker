@@ -3,7 +3,6 @@ from twisted.internet import defer
 from moira.api.request import delayed
 from moira.api.resources.redis import RedisResource
 
-import anyjson
 
 class Notifications(RedisResource):
 
@@ -17,8 +16,6 @@ class Notifications(RedisResource):
                                                               request.args.get('end')[0])
         result = []
         for jsonstr in notifications:
-            #notification = anyjson.loads(jsonstr)
-            #result.append(notification)
             result.append(jsonstr)
         self.write_json(request, {"list": result, "total": total})
 
