@@ -14,10 +14,7 @@ class Notifications(RedisResource):
     def render_GET(self, request):
         notifications, total = yield self.db.getNotifications(request.args.get('start')[0],
                                                               request.args.get('end')[0])
-        result = []
-        for jsonstr in notifications:
-            result.append(jsonstr)
-        self.write_json(request, {"list": result, "total": total})
+        self.write_json(request, {"list": list(notifications), "total": total})
 
     @delayed
     @defer.inlineCallbacks
